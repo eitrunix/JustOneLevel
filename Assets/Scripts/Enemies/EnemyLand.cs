@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStationary : Enemy
+public class EnemyLand : Enemy
 {
     private Rigidbody2D rb2d;
     private Animator animator;
@@ -16,42 +16,34 @@ public class EnemyStationary : Enemy
     private void Setup()
     {
         IsDead = false;
-        Type = EnemyType.Stationary;
+        Type = EnemyType.Land;
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         collider = GetComponent<BoxCollider2D>();
     }
-
     private void Update()
     {
-        if (rb2d.velocity.x > 0 && !IsDead || rb2d.velocity.x < 0 && !IsDead)
-        {
-            rb2d.velocity = new Vector2(0, 0);
-        }
-
         if (health <= 0)
         {
             IsDead = true;
             DeathAnimation();
         }
-
+    }
+    public override int RecievePoints()
+    {
+        return base.RecievePoints();
     }
 
     public override void TakeDamage(int _damage)
     {
         base.TakeDamage(_damage);
     }
-
     public override int GiveDamage()
     {
         return base.GiveDamage();
     }
 
-    public override int RecievePoints()
-    {
-        return base.RecievePoints();
-    }
     public void DeathAnimation()
     {
         Destroy(collider);
@@ -65,6 +57,5 @@ public class EnemyStationary : Enemy
         yield return new WaitForSeconds(0.1f);
         rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y - 2);
         Die();
-
     }
 }

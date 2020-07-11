@@ -14,7 +14,8 @@ public class playerController : MonoBehaviour
     // Health
     private static int defaultHealth = 3;
     private static int defaultLives = 3;
-
+    private int currentScore;
+    private int defaultScore = 0;
     public int currentLives;
     public int currentHealth;
 
@@ -67,7 +68,7 @@ public class playerController : MonoBehaviour
         }
         else
         {
-            TakeDamage();
+            TakeDamage(0);
         }
         CheckIfGrounded();
         Jump();
@@ -78,27 +79,33 @@ public class playerController : MonoBehaviour
     void Move()
     {
 
-            animator.SetBool("isRunning", true);
+        animator.SetBool("isRunning", true);
 
-            float x = Input.GetAxisRaw("Horizontal");
-            float moveBy = x * speed;
-            rb2d.velocity = new Vector2(moveBy, rb2d.velocity.y);
+        float x = Input.GetAxisRaw("Horizontal");
+        float moveBy = x * speed;
+        rb2d.velocity = new Vector2(moveBy, rb2d.velocity.y);
 
-            if (Input.GetAxisRaw("Horizontal") == 0)
-            {
-                animator.SetBool("isRunning", false);
-            }
-            else if (Input.GetAxisRaw("Horizontal") < 0)
-            {
-                sprite.flipX = true;
-                isFlipped = true;
-            }
-            else if (Input.GetAxisRaw("Horizontal") > 0)
-            {
-                sprite.flipX = false;
-                isFlipped = false;
-            }
-     
+        if (Input.GetAxisRaw("Horizontal") == 0)
+        {
+            animator.SetBool("isRunning", false);
+        }
+        if (Input.GetAxisRaw("Horizontal") < 0 && !isFlipped)
+        {
+            //sprite.flipX = true;
+            flip();
+        }
+        if (Input.GetAxisRaw("Horizontal") > 0 && isFlipped)
+        {
+            //sprite.flipX = false;
+            flip();
+        }
+
+    }
+
+    void flip()
+    {
+        isFlipped = !isFlipped;
+        transform.Rotate(0f, 180f, 0f);
     }
 
     void Jump()
@@ -146,17 +153,21 @@ public class playerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Enemy enemy;
         if(collision.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Yup");
+            enemy = collision.gameObject.GetComponent<Enemy>();
+
+            
+            TakeDamage(enemy.GiveDamage());
             resetKnockBack();
 
         }
     }
 
-    void TakeDamage()
+    void TakeDamage(int dmg)
     {
-        currentHealth -= 0;
+        currentHealth -= dmg;
         if (!isFlipped)
         {
             rb2d.velocity = new Vector2(-knockBackForce, knockBackForce);
@@ -177,7 +188,7 @@ public class playerController : MonoBehaviour
     {
         if(currentHealth <= 0)
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 }
