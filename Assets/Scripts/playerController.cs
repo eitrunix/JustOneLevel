@@ -6,23 +6,38 @@ public class playerController : MonoBehaviour
 {
 
     private Rigidbody2D rb2d;
+    // Movespeed
     public float speed;
 
-    public float jumpForce;
-    public float fallMultiplier = 2.5f;
-    public float lowJumpMultiplier = 2f;
+    // Health
+    private static int defaultHealth = 3;
+    private static int defaultLives = 3;
 
+    public int currentLives;
+    public int currentHealth;
+
+    // Jumping
+    public float jumpForce;
+    private float fallMultiplier = 2.5f;
+    private float lowJumpMultiplier = 2f;
+
+    // Double Jump
+    public int defaultAdditionalJumps = 0;
+    int additionalJumps;
+    
+    // Ground Check
     bool isGrounded = false;
     public Transform isGroundedChecker;
     public float checkGroundRadius;
     public LayerMask groundLayer;
-
     public float rememberGroundedFor;
     float lastTimeGrounded;
 
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        currentLives = defaultLives;
+        currentHealth = defaultHealth;
     }
     void Start()
     {
@@ -33,9 +48,10 @@ public class playerController : MonoBehaviour
     void Update()
     {
         Move();
-        Jump();
-        BetterJump();
         CheckIfGrounded();
+        Jump();
+        FallingCode();
+        
     }
 
     void Move()
@@ -47,9 +63,10 @@ public class playerController : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && (isGrounded || Time.time - lastTimeGrounded <= rememberGroundedFor))
+        if (Input.GetKeyDown(KeyCode.Space) && (isGrounded || Time.time - lastTimeGrounded <= rememberGroundedFor || additionalJumps > 0))
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
+            additionalJumps--;
         }
     }
 
@@ -59,6 +76,7 @@ public class playerController : MonoBehaviour
         if (colliders != null)
         {
             isGrounded = true;
+            additionalJumps = defaultAdditionalJumps;
         }
         else
         {
@@ -70,7 +88,7 @@ public class playerController : MonoBehaviour
         }
     }
 
-    void BetterJump()
+    void FallingCode()
     {
         if (rb2d.velocity.y < 0)
         {
