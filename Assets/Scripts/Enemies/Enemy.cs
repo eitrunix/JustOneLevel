@@ -13,17 +13,17 @@ public enum EnemyType
 }
 public class Enemy : MonoBehaviour
 {
-    public static EnemyType type;
+    private static EnemyType type;
     public static Rigidbody2D rb2d;
     public static Animator animator;
     public static SpriteRenderer sprite;
     private static int health;
-
+    private static bool isDead;
     public static BoxCollider2D collider;
 
     public static int Health { get => health; set => health = value; }
-
-
+    public static bool IsDead { get => isDead; set => isDead = value; }
+    public static EnemyType Type { get => type; set => type = value; }
 
     public void DeathAnimation()
     {
