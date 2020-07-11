@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class playerController : MonoBehaviour
 {
@@ -150,7 +151,15 @@ public class playerController : MonoBehaviour
             rb2d.velocity += Vector2.up * Physics2D.gravity * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Flag flag;
+        if(collision.gameObject.CompareTag("LevelFlag"))
+        {
 
+            SceneManager.LoadScene("Level1");
+        }
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Enemy enemy;
