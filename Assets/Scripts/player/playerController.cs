@@ -70,7 +70,7 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.instance.IsPlaying)
+        if (GameManager.instance.IsPlaying && !GameManager.instance.IsStartLevel)
         {
             if (knockbackCount <= 0)
             {
@@ -202,10 +202,8 @@ public class playerController : MonoBehaviour
 
     IEnumerator resetDamageCD()
     {
-        Debug.Log("Before: " + tookDamage);
         yield return new WaitForSeconds(0.4f);
         tookDamage = false;
-        Debug.Log("After: " + tookDamage);
 
     }
     void resetKnockBack()

@@ -10,8 +10,17 @@ public enum GameState
     Title,
     StartLevel,
     EndLevel,
-    Dead,
+    Dead
 
+}
+
+public enum LevelState
+{
+    level1,
+    level2,
+    level3,
+    level4,
+    level5
 }
 public class GameManager : MonoBehaviour
 {
@@ -20,6 +29,7 @@ public class GameManager : MonoBehaviour
     private int currentLives;
     private int currentHealth;
     private GameState state;
+    private LevelState levelState;
     public playerController player;
     public UI ui;
 
@@ -37,6 +47,8 @@ public class GameManager : MonoBehaviour
     public bool IsOnTitle { get => isOnTitle; set => isOnTitle = value; }
     public bool IsStartLevel { get => isStartLevel; set => isStartLevel = value; }
     public bool IsEndLevel { get => isEndLevel; set => isEndLevel = value; }
+    public GameState State { get => state; set => state = value; }
+    public LevelState LevelState { get => levelState; set => levelState = value; }
 
     // Start is called before the first frame update
     void Awake()
@@ -53,7 +65,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        state = GameState.StartLevel;
+        State = GameState.StartLevel;
+        LevelState = LevelState.level1;
         CurrentHealth = 3;
         CurrentLives = 3;
         CurrentScore = 0;
@@ -61,20 +74,41 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Return))
+
+        if (Input.GetKeyDown(KeyCode.Return))
         {
             isStartLevel = false;
-            state = GameState.Play;
+            State = GameState.Play;
         }
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            state = GameState.Pause;
+            State = GameState.Pause;
             if(Input.GetKeyDown(KeyCode.Escape) && IsPaused)
             {
-                state = GameState.Play;
+                State = GameState.Play;
             }
         }
-        switch (state)
+        switch (LevelState)
+        {
+            case LevelState.level1:
+                break;
+            case LevelState.level2:
+
+                break;
+            case LevelState.level3:
+
+                playerController.instance.defaultAdditionalJumps = 1;
+                break;
+            case LevelState.level4:
+
+                playerController.instance.defaultAdditionalJumps = 3;
+                break;
+            case LevelState.level5:
+
+                playerController.instance.defaultAdditionalJumps = 5;
+                break;
+        }
+        switch (State)
         {
             case GameState.Play:
                 IsPlaying = true;
@@ -94,7 +128,7 @@ public class GameManager : MonoBehaviour
             case GameState.EndLevel:
                 IsEndLevel = true;
                 IsPlaying = false;
-                state = GameState.StartLevel;
+                State = GameState.StartLevel;
                 break;
             case GameState.Dead:
                 ResetGame();
@@ -104,6 +138,10 @@ public class GameManager : MonoBehaviour
         CheckHealth();
     }
 
+    public void SetlevelState(LevelState _state)
+    {
+        LevelState = _state;
+    }
     public void AddScore(int _score)
     {
         CurrentScore += _score;
@@ -112,19 +150,19 @@ public class GameManager : MonoBehaviour
     {
         if (CurrentHealth <= 0)
         {
-            state = GameState.Dead;
+            State = GameState.Dead;
         }
     }
 
     void ResetGame()
     {
         Scene scn = SceneManager.GetActiveScene();
-        state = GameState.StartLevel;
+        State = GameState.StartLevel;
 
         CurrentHealth = 3;
         CurrentLives = 3;
         CurrentScore = 0;
-
-        SceneManager.LoadScene("Level1");
+        player.defaultAdditionalJumps = 0;
+        SceneManager.LoadScene("Level0");
     }
 }

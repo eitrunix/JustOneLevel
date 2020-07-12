@@ -15,7 +15,6 @@ public class Bullet : MonoBehaviour
 	void Start()
 	{
 		rb.velocity = transform.right * speed;
-		Debug.Log("Bullet Made");
 	}
 
 	void OnTriggerEnter2D(Collider2D hitInfo)
@@ -35,7 +34,6 @@ public class Bullet : MonoBehaviour
 
 	private void Update()
 	{
-		Debug.Log(bulletLifetime);
 		bulletLifetime -= Time.deltaTime;
 		if(bulletLifetime <= 0)
 		{

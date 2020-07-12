@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyAir : Enemy
 {
-
     private Rigidbody2D rb2d;
     private Animator animator;
     private SpriteRenderer sprite;
@@ -33,14 +32,6 @@ public class EnemyAir : Enemy
             IsDead = true;
             DeathAnimation();
         }
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            rb2d.velocity = new Vector2(rb2d.velocity.x, 3);
-        }
-
     }
 
     public override int RecievePoints()
@@ -108,11 +99,5 @@ public class EnemyAir : Enemy
             }
 
         }
-    }
-
-    
-    void flip()
-    {
-        transform.Rotate(0f, 180f, 0f);
     }
 }

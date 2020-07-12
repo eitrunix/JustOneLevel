@@ -7,7 +7,7 @@ public class EnemyLand : Enemy
     private Rigidbody2D rb2d;
     private Animator animator;
     private SpriteRenderer sprite;
-    private static BoxCollider2D boxcollider;
+    private static BoxCollider2D collider;
     private float moveTime;
     private bool isFlipped;
     private void Awake()
@@ -21,7 +21,7 @@ public class EnemyLand : Enemy
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
-        boxcollider = GetComponent<BoxCollider2D>();
+        collider = GetComponent<BoxCollider2D>();
     }
 
     private void Update()
@@ -32,9 +32,7 @@ public class EnemyLand : Enemy
             IsDead = true;
             DeathAnimation();
         }
-
     }
-
 
     public override int RecievePoints()
     {
@@ -52,7 +50,7 @@ public class EnemyLand : Enemy
 
     public void DeathAnimation()
     {
-        Destroy(boxcollider);
+        Destroy(collider);
 
         StartCoroutine(DeathAnim());
     }
