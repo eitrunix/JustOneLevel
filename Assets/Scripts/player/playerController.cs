@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class playerController : MonoBehaviour
 {
+    public static playerController instance = null; 
+
     private BoxCollider2D playerColider;
 
     private SpriteRenderer sprite;
@@ -45,11 +47,21 @@ public class playerController : MonoBehaviour
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         playerColider = GetComponent<BoxCollider2D>();
     }
+
     void Start()
     {
 
@@ -150,11 +162,11 @@ public class playerController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.CompareTag("LevelFlag"))
-        {
+        //if(collision.gameObject.CompareTag("LevelFlag"))
+        //{
 
-            SceneManager.LoadScene("Level1");
-        }
+        //    SceneManager.LoadScene("Level1");
+        //}
 
         Enemy enemy;
         if (collision.gameObject.CompareTag("Enemy"))

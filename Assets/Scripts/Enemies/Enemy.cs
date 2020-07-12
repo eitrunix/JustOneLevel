@@ -41,6 +41,18 @@ public class Enemy : MonoBehaviour
 		Destroy(gameObject);
 	}
 
+	private void Update()
+	{
+		if(GameManager.instance.IsEndLevel)
+		{
+			endLevelDie();
+		}
+	}
+	private void endLevelDie()
+	{
+		Destroy(gameObject);
+
+	}
 	public virtual int RecievePoints()
 	{
 		return scoreAdded;

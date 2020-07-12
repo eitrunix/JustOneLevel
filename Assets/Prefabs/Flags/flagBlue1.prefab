@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 548271239458580940}
   - component: {fileID: 548271239458580941}
   - component: {fileID: 548271239458580938}
+  - component: {fileID: 9158093253769563466}
+  - component: {fileID: -632346316043938041}
   m_Layer: 0
   m_Name: flagBlue1
-  m_TagString: Untagged
+  m_TagString: LevelFlag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,3 +103,59 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!60 &9158093253769563466
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 548271239458580939}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 1.28}
+    newSize: {x: 1.28, y: 1.28}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.57, y: 0.03}
+      - {x: 0.57, y: 0.26}
+      - {x: 0.25, y: 0.45}
+      - {x: -0.17999999, y: 0.41}
+      - {x: -0.41, y: 0.52}
+      - {x: -0.47, y: 0.64}
+      - {x: -0.61, y: 0.64}
+      - {x: -0.64, y: 0.59999996}
+      - {x: -0.64, y: -0.64}
+      - {x: -0.44, y: -0.64}
+      - {x: -0.29999998, y: -0.22999999}
+      - {x: -0.13, y: -0.22999999}
+      - {x: 0.35, y: 0.03}
+--- !u!114 &-632346316043938041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 548271239458580939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e463c8889441404a8ff0fb79b4fb483, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flag: 0
+  enemies:
+  - {fileID: 9085021485729926098, guid: faec015f79e7bdf4a8e103fc2855d635, type: 3}
+  - {fileID: 4372324308126350435, guid: 222eb3a0b22e1c04ca2692bf949ea325, type: 3}
+  - {fileID: 8933057434491392634, guid: cd4c83dbaae88504093a70f52f3ba474, type: 3}
+  - {fileID: 9085021485729926098, guid: 30ad74030a5713d4b9a9bd2c58d3a7e1, type: 3}

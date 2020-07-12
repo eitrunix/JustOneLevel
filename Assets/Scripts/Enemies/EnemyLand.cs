@@ -12,7 +12,7 @@ public class EnemyLand : Enemy
     private bool isFlipped;
     private void Awake()
     {
-        Setup();
+        Setup(); 
     }
     private void Setup()
     {

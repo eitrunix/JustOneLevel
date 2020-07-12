@@ -8,6 +8,8 @@ TagManager:
   - LevelFlag
   - music
   - UI
+  - SpawnPoint
+  - Ground
   layers:
   - Default
   - TransparentFX
