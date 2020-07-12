@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyLand : Enemy
+public class EnemyAir : Enemy
 {
+
     private Rigidbody2D rb2d;
     private Animator animator;
     private SpriteRenderer sprite;
-    private static BoxCollider2D boxcollider;
+    private static BoxCollider2D collider;
     private float moveTime;
     private bool isFlipped;
     private void Awake()
@@ -21,7 +22,7 @@ public class EnemyLand : Enemy
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
-        boxcollider = GetComponent<BoxCollider2D>();
+        collider = GetComponent<BoxCollider2D>();
     }
 
     private void Update()
@@ -32,9 +33,15 @@ public class EnemyLand : Enemy
             IsDead = true;
             DeathAnimation();
         }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, 3);
+        }
 
     }
-
 
     public override int RecievePoints()
     {
@@ -52,7 +59,7 @@ public class EnemyLand : Enemy
 
     public void DeathAnimation()
     {
-        Destroy(boxcollider);
+        Destroy(collider);
 
         StartCoroutine(DeathAnim());
     }
@@ -75,34 +82,37 @@ public class EnemyLand : Enemy
             {
                 //sprite.flipX = true;
                 moveTime -= Time.deltaTime;
-                rb2d.velocity = new Vector2(2, rb2d.velocity.y);
+                rb2d.velocity = new Vector2(rb2d.velocity.x, 3);
 
                 if (moveTime <= 0)
                 {
                     isFlipped = true;
-                    moveTime = 3;
-                    transform.Rotate(0f, 180f, 0f);
+                    moveTime = 1.5f;
 
                 }
             }
             if (isFlipped)
             {
-                //sprite.flipX = false;
 
                 moveTime -= Time.deltaTime;
 
-                rb2d.velocity = new Vector2(-2, rb2d.velocity.y);
+                rb2d.velocity = new Vector2(rb2d.velocity.x, -3);
 
                 if (moveTime <= 0)
                 {
                     isFlipped = false;
-                    moveTime = 3;
-                    transform.Rotate(0f, 180f, 0f);
+                    moveTime = 1.5f;
 
                 }
 
             }
 
         }
+    }
+
+    
+    void flip()
+    {
+        transform.Rotate(0f, 180f, 0f);
     }
 }

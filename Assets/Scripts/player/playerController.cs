@@ -10,12 +10,16 @@ public class playerController : MonoBehaviour
     private SpriteRenderer sprite;
     private Rigidbody2D rb2d;
     // Movespeed
+    [Range(0.0f, 50.0f)]
     public float speed;
 
     // Jumping
+    [Range(0.0f, 20.0f)]
     public float jumpForce;
-    private float fallMultiplier = 10.5f;
-    private float lowJumpMultiplier = 10.0f;
+    [Range(0.0f, 15.0f)]
+    public float fallMultiplier = 10.5f;  // private
+    [Range(0.0f, 10.0f)]
+    public float lowJumpMultiplier = 10.0f; // private
 
     // Double Jump
     public int defaultAdditionalJumps = 0;
@@ -38,6 +42,7 @@ public class playerController : MonoBehaviour
     private float knockBackLength = 0.2f;
     private float knockbackCount;
     bool tookDamage;
+
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -47,7 +52,7 @@ public class playerController : MonoBehaviour
     }
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -132,7 +137,7 @@ public class playerController : MonoBehaviour
 
     void FallingCode()
     {
-        if (rb2d.velocity.y < 0)
+        if (rb2d.velocity.y < 0 || rb2d.velocity.y > 0 && tookDamage)
         {
             animator.SetBool("isJumping", true);
             rb2d.velocity += Vector2.up * Physics2D.gravity * (fallMultiplier - 1) * Time.deltaTime;
@@ -159,6 +164,7 @@ public class playerController : MonoBehaviour
             resetKnockBack();
 
         }
+
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -168,6 +174,9 @@ public class playerController : MonoBehaviour
     void TakeDamage(int dmg)
     {
         GameManager.instance.CurrentHealth -= dmg;
+        tookDamage = true;
+        StartCoroutine(resetDamageCD());
+
         if (!isFlipped)
         {
             rb2d.velocity = new Vector2(-knockBackForce, knockBackForce);
@@ -179,6 +188,14 @@ public class playerController : MonoBehaviour
         knockbackCount -= Time.deltaTime;
     }
 
+    IEnumerator resetDamageCD()
+    {
+        Debug.Log("Before: " + tookDamage);
+        yield return new WaitForSeconds(0.4f);
+        tookDamage = false;
+        Debug.Log("After: " + tookDamage);
+
+    }
     void resetKnockBack()
     {
         knockbackCount = knockBackLength;
