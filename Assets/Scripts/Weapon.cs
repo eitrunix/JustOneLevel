@@ -14,7 +14,7 @@ public class Weapon : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (Input.GetButton("Fire1") && canFire)
+		if (Input.GetButton("Fire1") && canFire && GameManager.instance.IsPlaying)
 		{
 			canFire = !canFire;
 			Shoot();

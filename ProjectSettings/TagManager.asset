@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Enemy
   - LevelFlag
+  - music
+  - UI
   layers:
   - Default
   - TransparentFX

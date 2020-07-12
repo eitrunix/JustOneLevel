@@ -8,7 +8,8 @@ public class EnemyLand : Enemy
     private Animator animator;
     private SpriteRenderer sprite;
     private static BoxCollider2D collider;
-
+    private float moveTime;
+    private bool isFlipped;
     private void Awake()
     {
         Setup();
@@ -22,14 +23,19 @@ public class EnemyLand : Enemy
         sprite = GetComponent<SpriteRenderer>();
         collider = GetComponent<BoxCollider2D>();
     }
+
     private void Update()
     {
+        Movement();
         if (health <= 0)
         {
             IsDead = true;
             DeathAnimation();
         }
+
     }
+
+
     public override int RecievePoints()
     {
         return base.RecievePoints();
@@ -57,5 +63,47 @@ public class EnemyLand : Enemy
         yield return new WaitForSeconds(0.1f);
         rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y - 2);
         Die();
+    }
+
+    public void Movement()
+    {
+
+        if (!IsDead && GameManager.instance.IsPlaying)
+        {
+            Debug.Log("Starting : " + moveTime);
+
+            if (!isFlipped)
+            {
+                //sprite.flipX = true;
+                moveTime -= Time.deltaTime;
+                rb2d.velocity = new Vector2(2, rb2d.velocity.y);
+
+                if (moveTime <= 0)
+                {
+                    isFlipped = true;
+                    moveTime = 3;
+                    transform.Rotate(0f, 180f, 0f);
+
+                }
+            }
+            if (isFlipped)
+            {
+                //sprite.flipX = false;
+
+                moveTime -= Time.deltaTime;
+
+                rb2d.velocity = new Vector2(-2, rb2d.velocity.y);
+
+                if (moveTime <= 0)
+                {
+                    isFlipped = false;
+                    moveTime = 3;
+                    transform.Rotate(0f, 180f, 0f);
+
+                }
+
+            }
+
+        }
     }
 }

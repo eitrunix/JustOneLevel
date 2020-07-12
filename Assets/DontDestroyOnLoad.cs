@@ -7,7 +7,12 @@ public class DontDestroyOnLoad : MonoBehaviour
     private void Awake()
     {
         GameObject[] objs = GameObject.FindGameObjectsWithTag("music");
+        GameObject[] UI = GameObject.FindGameObjectsWithTag("UI");
+
         if (objs.Length > 1)
+            Destroy(this.gameObject);
+
+        if (UI.Length > 1)
             Destroy(this.gameObject);
 
         DontDestroyOnLoad(this.gameObject);

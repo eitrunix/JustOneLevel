@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour
 	public float speed = 20f;
 	public int damage;
 	public Rigidbody2D rb;
+	private float bulletLifetime = 0.5f;
 	//public GameObject impactEffect;
 
 	// Use this for initialization
@@ -29,4 +30,13 @@ public class Bullet : MonoBehaviour
 		Destroy(gameObject);
 	}
 
+	private void Update()
+	{
+		Debug.Log(bulletLifetime);
+		bulletLifetime -= Time.deltaTime;
+		if(bulletLifetime <= 0)
+		{
+			Destroy(gameObject);
+		}	
+	}
 }

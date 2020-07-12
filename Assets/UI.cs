@@ -7,19 +7,40 @@ public class UI : MonoBehaviour
 {
     public Text healthText;
     public Text livesText;
-    public playerController player;
     public Text scoreText;
+    public Text startToPlay;
+    public Text paused;
+    public GameObject bgPause;
 
-    private int currentScore;
     private void Update()
     {
-        scoreText.text = "Score : " + currentScore;
-        livesText.text = "Lives : " + player.currentLives;
-        healthText.text = "Health : " + player.currentHealth;
+        if(!GameManager.instance.IsStartLevel)
+        {
+            startToPlay.enabled = false;
+        }
+        else
+        {
+            startToPlay.enabled = true;
+        }
+
+        if(GameManager.instance.IsPaused)
+        {
+            paused.enabled = true;
+            bgPause.SetActive(true);
+        }
+        else
+        {
+            paused.enabled = false;
+            bgPause.SetActive(false);
+
+        }
+    }
+    private void LateUpdate()
+    {
+        scoreText.text = "Score : " + GameManager.instance.CurrentScore;
+        livesText.text = "Lives : " + GameManager.instance.CurrentLives;
+        healthText.text = "Health : " + GameManager.instance.CurrentHealth;
     }
 
-    public void updateScore(int _score)
-    {
-        currentScore += _score;
-    }
+
 }

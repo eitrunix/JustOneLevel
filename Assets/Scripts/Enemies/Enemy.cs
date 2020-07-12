@@ -37,7 +37,7 @@ public class Enemy : MonoBehaviour
 	public virtual void Die()
 	{
 		UI tmpUI = FindObjectOfType<UI>();
-		tmpUI.updateScore(scoreAdded);
+		GameManager.instance.AddScore(scoreAdded);
 		Destroy(gameObject);
 	}
 

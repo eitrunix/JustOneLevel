@@ -12,14 +12,6 @@ public class playerController : MonoBehaviour
     // Movespeed
     public float speed;
 
-    // Health
-    private static int defaultHealth = 3;
-    private static int defaultLives = 3;
-    private int currentScore;
-    private int defaultScore = 0;
-    public int currentLives;
-    public int currentHealth;
-
     // Jumping
     public float jumpForce;
     private float fallMultiplier = 10.5f;
@@ -52,8 +44,6 @@ public class playerController : MonoBehaviour
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         playerColider = GetComponent<BoxCollider2D>();
-        currentLives = defaultLives;
-        currentHealth = defaultHealth;
     }
     void Start()
     {
@@ -63,18 +53,20 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (knockbackCount <= 0)
+        if (GameManager.instance.IsPlaying)
         {
-            Move();
+            if (knockbackCount <= 0)
+            {
+                Move();
+            }
+            else
+            {
+                TakeDamage(0);
+            }
+            CheckIfGrounded();
+            Jump();
+            FallingCode();
         }
-        else
-        {
-            TakeDamage(0);
-        }
-        CheckIfGrounded();
-        Jump();
-        FallingCode();
-        CheckHealth();
     }
 
     void Move()
@@ -153,30 +145,29 @@ public class playerController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Flag flag;
         if(collision.gameObject.CompareTag("LevelFlag"))
         {
 
             SceneManager.LoadScene("Level1");
         }
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
+
         Enemy enemy;
-        if(collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
             enemy = collision.gameObject.GetComponent<Enemy>();
-
-            
             TakeDamage(enemy.GiveDamage());
             resetKnockBack();
 
         }
     }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+
+    }
 
     void TakeDamage(int dmg)
     {
-        currentHealth -= dmg;
+        GameManager.instance.CurrentHealth -= dmg;
         if (!isFlipped)
         {
             rb2d.velocity = new Vector2(-knockBackForce, knockBackForce);
@@ -193,11 +184,4 @@ public class playerController : MonoBehaviour
         knockbackCount = knockBackLength;
     }
 
-    void CheckHealth()
-    {
-        if(currentHealth <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
 }
